@@ -1,6 +1,7 @@
 # city-explorer-api
 
-[Diagram of this app's relationship to the user interface](/assets/WRRC%20Lab%207.png)
+[Lab 7 WRRC Diagram](/assets/WRRC%20Lab%207.png)
+[Lab 8 WRRC Diagram](/assets/WRRC%20Lab%208.png)
 
 **Author**: Your Name Goes Here
 **Version**: 1.0.0 (increment the patch/fix version number if you make more commits past your first submission)

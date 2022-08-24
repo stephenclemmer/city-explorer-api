@@ -2,35 +2,27 @@
 
 console.log('YOUR first SERVER! Awesome!');
 
-// const {response} = require('express');
 const express = require('express');
 const cors = require('cors');
-const data = require('./data/weather.json');
-
 require('dotenv').config();
+const data = require('./data/weather.json');
 
 const PORT = process.env.PORT || 3002;
 
-
-// let lat = request.query.lat;
-// let lon = request.query.lon;
-
-
-// Route Section:
 const app = express();
 // allows one to communicate to external services i.e., APIs
 app.use(cors());
 
+// Route Section:
 //  Base route:
 app.get('/', (request, response) => {
   response.status(200).send('Welcome to our server');
 });
 
 // weather route
-app.get('/weather', (request, response) => {
+app.get('/weather', (request, response, next) => {
   try {
     let cityName = request.query.city;
-    // console.log(city);
     let dataToGroom = data.find(city => city.city_name === cityName);
     let dataToSend = dataToGroom.data.map(object => {
       return new Forecast(object);
