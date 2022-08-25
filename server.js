@@ -3,15 +3,17 @@
 console.log('YOUR first SERVER! Awesome!');
 
 const express = require('express');
-const cors = require('cors');
 require('dotenv').config();
-const data = require('./data/weather.json');
+const cors = require('cors');
+const axios = require ('axios');
 
-const PORT = process.env.PORT || 3002;
+// const data = require('./data/weather.json');
 
 const app = express();
+const PORT = process.env.PORT || 3002;
 // allows one to communicate to external services i.e., APIs
 app.use(cors());
+
 
 // Route Section:
 //  Base route:
@@ -20,21 +22,28 @@ app.get('/', (request, response) => {
 });
 
 // weather route
-app.get('/weather', (request, response, next) => {
+app.get('/weather', getWeather);
+
+async function getWeather(request, response, next) {
+  let latitude = request.query.lat;
+  let longitude = request.query.lon;
+  const weatherURL = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${latitude}&lon=${longitude}&key=${process.env.REACT_APP_WEATHER_API_KEY}`;
+
   try {
-    let cityName = request.query.city;
-    let dataToGroom = data.find(city => city.city_name === cityName);
+    let cityData = await axios.get(weatherURL);
+    let dataToGroom = cityData.data;
+
     let dataToSend = dataToGroom.data.map(object => {
       return new Forecast(object);
+
     });
-
     response.status(200).send(dataToSend);
-
-  }catch(error){
-    next(error);
   }
 
-});
+  catch(error){
+    next(error);
+  }
+}
 
 class Forecast {
   constructor(weatherObj){
@@ -42,7 +51,44 @@ class Forecast {
     this.description = weatherObj.weather.description;
   }
 }
+// ______________________________________
+app.get('/movies', getMovies);
 
+async function getMovies(request, response, next) {
+  
+  let city = request.query.city;
+  console.log(city);
+  console.log(process.env.REACT_APP_MOVIE_API_KEY)
+  const movieURL = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_MOVIE_API_KEY}&query=${city}`;
+
+
+
+
+  try {
+    let cityData = await axios.get(movieURL);
+
+    let dataToSend = cityData.data.results.map(object => new Playing(object));
+    response.status(200).send(dataToSend);
+  }
+
+  catch(error){
+    next(error);
+  }
+}
+
+class Playing {
+  constructor(movieObj){
+    this.title = movieObj.title;
+    this.poster = movieObj.poster_path;
+    this.overview = movieObj.overview;
+    this.average_votes = movieObj.vote_average;
+    this.total_votes = movieObj.vote_count;
+    this.popularity = movieObj.popularity;
+    this.release_date = movieObj.release_date;
+  }
+}
+
+// ______________________________________
 // Error message
 app.get('*', (request, response) => {
   response.status(500).send('"error": "Something went wrong"');
@@ -53,7 +99,7 @@ app.get('*', (request, response) => {
 //   response.status(404).send('This route does not exist');
 // });
 
-app.use((error, request, response, next) => {
+app.use((error, request, response) => {
   response.status(500).send(error.message);
 });
 
