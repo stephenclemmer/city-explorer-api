@@ -92,7 +92,7 @@ app.get('*', (request, response) => {
 //   response.status(404).send('This route does not exist');
 // });
 
-app.use((error, request, response, next) => {
+app.use((error, request, response) => {
   response.status(500).send(error.message);
 });
 
