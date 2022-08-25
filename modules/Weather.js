@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const axios = require ('axios');
 
-app.get('/weather', getWeather);
+// app.get('/weather', getWeather);
 
 async function getWeather(request, response, next) {
   console.log('serverside weather');
