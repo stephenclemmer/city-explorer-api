@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 const axios = require ('axios');
 
-app.get('/movies', getMovies);
+// app.get('/movies', getMovies);
 
 async function getMovies(request, response, next) {
   
