@@ -6,12 +6,7 @@ let cache = require('./cache.js');
 
 // __________________________
 
-class Forecast {
-  constructor(weatherObj) {
-    this.date = weatherObj.valid_date;
-    this.description = weatherObj.weather.description;
-  }
-}
+
 
 async function getWeather(request, response, next) {
   let latitude = request.query.lat;
@@ -21,16 +16,16 @@ async function getWeather(request, response, next) {
   console.log(cache[key]);
   console.log('***********************');
   console.log(cache);
-  if (cache[key] && (Date.now() - cache[key].timestamp < 500000)) {
-    console.log('Cache hit');
+  if (cache[key] && (Date.now() - cache[key].timestamp < 120000)) {
+    console.log('Weather Cache hit');
   } else {
-    console.log('Cache miss');
+    console.log('Weather Cache miss');
     cache[key] = {};
     cache[key].timestamp = Date.now();
     let result = await axios.get(weatherURL);
     cache[key].data = result.data;
     console.log(weatherURL);
-    
+
     try {
       let cityData = cache[key].data;
       // console.log(cityData);
@@ -39,15 +34,21 @@ async function getWeather(request, response, next) {
       let dataToSend = dataToGroom.map(object => {
         return new Forecast(object);
       });
-      
+
       response.status(200).send(dataToSend);
     }
-    
+
     catch (error) {
       next(error);
     }
   }
 }
 
+class Forecast {
+  constructor(weatherObj) {
+    this.date = weatherObj.valid_date;
+    this.description = weatherObj.weather.description;
+  }
+}
 
 module.exports = getWeather;
