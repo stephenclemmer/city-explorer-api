@@ -13,9 +13,9 @@ async function getWeather(request, response, next) {
   let longitude = request.query.lon;
   const key = 'weather-' + latitude + longitude;
   const weatherURL = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${latitude}&lon=${longitude}&key=${process.env.REACT_APP_WEATHER_API_KEY}`;
-  console.log(cache[key]);
-  console.log('***********************');
-  console.log(cache);
+  // console.log(cache[key]);
+  // console.log('***********************');
+  // console.log(cache);
   if (cache[key] && (Date.now() - cache[key].timestamp < 120000)) {
     console.log('Weather Cache hit');
   } else {
