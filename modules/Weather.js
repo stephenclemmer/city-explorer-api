@@ -1,39 +1,42 @@
-'use strict';
+// 'use strict';
 
-// const express = require('express');
-// const app = express();
-const axios = require ('axios');
+// let cache = require('./cache.js');
 
-// app.get('/weather', getWeather);
+// function getWeather(latitude, longitude) {
+//   const key = 'weather-' + latitude + longitude;
+//   // sample key = 'weather-{latitude}+{longitude}'
+//   const url = `http://api.weatherbit.io/v2.0/forecast/daily/?key=${WEATHER_API_KEY}&lang=en&lat=${latitude}&lon=${longitude}&days=5`;
+  
+//   if (cache[key] && (Date.now() - cache[key].timestamp < 50000)) {
+//     console.log('Cache hit');
+//   } else {
+//     console.log('Cache miss');
+//     cache[key] = {};
+//     cache[key].timestamp = Date.now();
+//     cache[key].data = axios.get(url)
+//     .then(response => parseWeather(response.data));
+//   }
+  
+//   return cache[key].data;
 
-async function getWeather(request, response, next) {
-  console.log('serverside weather');
-  let latitude = request.query.lat;
-  let longitude = request.query.lon;
-  const weatherURL = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${latitude}&lon=${longitude}&key=${process.env.REACT_APP_WEATHER_API_KEY}`;
+// }
 
-  try {
-    let cityData = await axios.get(weatherURL);
-    let dataToGroom = cityData.data;
+// function parseWeather(weatherData) {
+//   try {
+//     const weatherSummaries = weatherData.data.map(day => {
+//       return new Weather(day);
+//     });
+//     return Promise.resolve(weatherSummaries);
+//   } catch (e) {
+//     return Promise.reject(e);
+//   }
+// }
 
-    let dataToSend = dataToGroom.data.map(object => {
-      return new Forecast(object);
+// class Weather {
+//   constructor(day) {
+//     this.forecast = day.weather.description;
+//     this.time = day.datetime;
+//   }
+// }
 
-    });
-    response.status(200).send(dataToSend);
-  }
-
-  catch(error){
-    next(error);
-  }
-}
-
-class Forecast {
-  constructor(weatherObj){
-    this.date = weatherObj.valid_date;
-    this.description = weatherObj.weather.description;
-  }
-}
-
-
-module.exports = getWeather;
+// module.exports = getWeather;

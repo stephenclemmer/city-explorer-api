@@ -1,53 +1,27 @@
-'use strict';
+// 'use strict';
 
-console.log('YOUR first SERVER! Awesome!');
+// console.log('YOUR first SERVER! Awesome!');
 
-const express = require('express');
-require('dotenv').config();
-const cors = require('cors');
-// const axios = require ('axios');
-const getWeather = require ('./modules/Weather.js');
-const getMovies = require ('./modules/Movies.js');
+// require('dotenv');
+// const express = require('express');
+// const cors = require('cors');
 
-// const data = require('./data/weather.json');
-
-const app = express();
-const PORT = process.env.PORT || 3002;
-// allows one to communicate to external services i.e., APIs
-app.use(cors());
+// const weather = require('./modules/weather.js');
 
 
-// Route Section:
-//  Base route:
-app.get('/', (request, response) => {
-  response.status(200).send('Welcome to our server');
-});
 
-// ______________________________________
-// weather route
-app.get('/weather', getWeather);
+// const app = express();
 
-// ______________________________________
-// movies route
-app.get('/movies', getMovies);
+// app.get('/weather', weatherHandler);
 
-// ______________________________________
+// function weatherHandler(request, response) {
+//   const { lat, lon } = request.query;
+//   weather(lat, lon)
+//   .then(summaries => response.send(summaries))
+//   .catch((error) => {
+//     console.error(error);
+//     response.status(200).send('Sorry. Something went wrong!')
+//   });
+// }  
 
-
-// Error message section
-app.get('*', (request, response) => {
-  response.status(500).send('"error": "Something went wrong"');
-});
-
-// // catch all NEEDS TO BE AT THE BOTTOM
-// app.get('*', (request, response) => {
-//   response.status(404).send('This route does not exist');
-// });
-
-app.use((error, request, response) => {
-  response.status(500).send(error.message);
-});
-
-app.listen(PORT,() => console.log(`We are up on PORT: ${PORT}`));
-
-
+// app.listen(process.env.PORT, () => console.log(`Server up on ${process.env.PORT}`));
