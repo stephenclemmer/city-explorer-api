@@ -1,3 +1,4 @@
+/* This is a Node.js server code that creates an Express application to handle HTTP requests. */
 'use strict';
 
 console.log('YOUR first SERVER! Awesome!');
