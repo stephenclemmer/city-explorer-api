@@ -5,6 +5,7 @@ let cache = require('./cache.js');
 // __________________________
 
 async function getWeather(request, response, next) {
+
   let latitude = request.query.lat;
   let longitude = request.query.lon;
 
